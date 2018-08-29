@@ -18,6 +18,7 @@ class Redis
       :id => nil,
       :tcp_keepalive => 0,
       :reconnect_attempts => 1,
+      :reconnect_interval => 0,
       :inherit_socket => false
     }
 
@@ -369,6 +370,7 @@ class Redis
         disconnect
 
         if attempts <= @options[:reconnect_attempts] && @reconnect
+          sleep(@options[:reconnect_interval] * attempts)
           retry
         else
           raise
